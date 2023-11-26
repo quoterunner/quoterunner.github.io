@@ -157,7 +157,7 @@ function keypressEvent(event) {
         accuracy +
         "%</h1><p>Accuracy</p></div><div id='results'><h1>" +
         rawWpm +
-        "</h1><p>Raw WPM</p></div><div id='results'><h1>" + seconds + "</h1><p>Seconds</p></div><div id='results'><a onclick='getQuote();'><span class='material-symbols-rounded' style='color: black; font-size: 50px;'>start</span></a></div>";
+        "</h1><p>Raw WPM</p></div><div id='results'><h1>" + seconds + "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' onclick='getQuote();'></div>";
       enterAllowed = true;
 
       firstLetter = true;
