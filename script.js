@@ -1,4 +1,8 @@
-//variable definition
+// /-----------\
+// | Variables |
+// \-----------/
+
+//html elements
 const quoteElement = document.getElementById("quote");
 const authorElement = document.getElementById("author");
 
@@ -11,7 +15,6 @@ var timerRunning = false;
 var currentLetterKeypress = 0;
 var correctLetters = 0;
 var firstLetter = true;
-var enterAllowed = false;
 
 //for the onload event listener
 var minLength = localStorage.getItem("minLength");
@@ -20,6 +23,13 @@ var lengthName = localStorage.getItem("lengthName");
 
 
 
+// /-----------\
+// | Functions |
+// \-----------/
+
+
+
+//custom error popup
 function displayError(icon, text) {
   document.getElementById("local-error-trigger").innerHTML =
     '<div id="local-error-container"> <div id="local-error"> <span class="material-symbols-rounded" style="font-size: 50px;"> ' +
@@ -28,11 +38,11 @@ function displayError(icon, text) {
     text +
     " </h2> </div> </div>";
 }
-
 function clearError() {
   document.getElementById("local-error-trigger").innerHTML = "";
 }
 
+//timer for wpm
 function timer() {
   if (timerRunning) {
     seconds++;
@@ -40,6 +50,7 @@ function timer() {
   }
 }
 
+//get a new quote
 function getQuote(minLength, maxLength, lengthName) {
   firstLetter = true;
   currentLetterKeypress = 0;
@@ -103,23 +114,11 @@ function getQuote(minLength, maxLength, lengthName) {
     });
 }
 
-document.addEventListener("keydown", (event) => {
-  var caps = event.getModifierState("CapsLock");
-  if (caps) {
-    displayError("keyboard_capslock", "Caps lock on");
-  } else {
-    clearError();
-  }
-});
-
-document.addEventListener("keypress", (event) => keypressEvent(event));
-
 function keypressEvent(event) {
   var key = event.key;
 
-  if (enterAllowed == true && key == "Enter") {
+  if (key == "Enter") {
     getQuote();
-    enterAllowed == false;
     return;
   }
 
@@ -170,7 +169,6 @@ function keypressEvent(event) {
         "%</h1><p>Accuracy</p></div><div id='results'><h1>" +
         rawWpm +
         "</h1><p>Raw WPM</p></div><div id='results'><h1>" + seconds + "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' onclick='getQuote();'></div>";
-      enterAllowed = true;
 
       firstLetter = true;
       currentLetterKeypress = 0;
@@ -191,14 +189,34 @@ function keypressEvent(event) {
 
 
 
-if (
-  minLength == undefined ||
-  maxLength == undefined ||
-  lengthName == undefined
-) {
-  minLength = 0;
-  maxLength = 50;
-  lengthName = "small";
-}
+// /-----------------\
+// | Event listeners |
+// \-----------------/
 
-getQuote(minLength, maxLength, lengthName);
+
+
+document.addEventListener("keydown", (event) => {
+  var caps = event.getModifierState("CapsLock");
+  if (caps) {
+    displayError("keyboard_capslock", "Caps lock on");
+  } else {
+    clearError();
+  }
+});
+
+document.addEventListener("keypress", (event) => keypressEvent(event));
+
+
+document.addEventListener("onload", function(){
+  if (
+    minLength == undefined ||
+    maxLength == undefined ||
+    lengthName == undefined
+  ) {
+    minLength = 0;
+    maxLength = 50;
+    lengthName = "small";
+  }
+  
+  getQuote(minLength, maxLength, lengthName);
+})
