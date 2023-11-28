@@ -1,3 +1,25 @@
+//variable definition
+const quoteElement = document.getElementById("quote");
+const authorElement = document.getElementById("author");
+
+//for timer function
+var seconds = 0;
+var quoteLength = 0;
+var timerRunning = false;
+
+//for the keypress event function
+var currentLetterKeypress = 0;
+var correctLetters = 0;
+var firstLetter = true;
+var enterAllowed = false;
+
+//for the onload event listener
+var minLength = localStorage.getItem("minLength");
+var maxLength = localStorage.getItem("maxLength");
+var lengthName = localStorage.getItem("lengthName");
+
+
+
 function displayError(icon, text) {
   document.getElementById("local-error-trigger").innerHTML =
     '<div id="local-error-container"> <div id="local-error"> <span class="material-symbols-rounded" style="font-size: 50px;"> ' +
@@ -11,9 +33,6 @@ function clearError() {
   document.getElementById("local-error-trigger").innerHTML = "";
 }
 
-var seconds = 0;
-var quoteLength = 0;
-var timerRunning = false;
 function timer() {
   if (timerRunning) {
     seconds++;
@@ -63,9 +82,6 @@ function getQuote(minLength, maxLength, lengthName) {
       console.log(" ");
       console.info("New quote: " + json["content"] + " " + author);
 
-      const quoteElement = document.getElementById("quote");
-      const authorElement = document.getElementById("author");
-
       quoteElement.innerHTML = "";
       quoteLength = json["length"];
 
@@ -98,10 +114,6 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("keypress", (event) => keypressEvent(event));
 
-var currentLetterKeypress = 0;
-var correctLetters = 0;
-var firstLetter = true;
-var enterAllowed = false;
 function keypressEvent(event) {
   var key = event.key;
 
@@ -177,9 +189,7 @@ function keypressEvent(event) {
   }
 }
 
-var minLength = localStorage.getItem("minLength");
-var maxLength = localStorage.getItem("maxLength");
-var lengthName = localStorage.getItem("lengthName");
+
 
 if (
   minLength == undefined ||
