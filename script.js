@@ -1,6 +1,12 @@
+// QuoteRunner script.js
+
+
+
 // /-----------\
 // | Variables |
 // \-----------/
+
+
 
 //html elements
 const quoteElement = document.getElementById("quote");
