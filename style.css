@@ -73,3 +73,27 @@ a:hover {
   padding: 10px;
   border-top-right-radius: 10px;
 }
+
+#keyboard-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keyboard-key, .keyboard-space {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  border-radius: 10px;
+
+  background-color: grey;
+  color: white;
+}
+
+.keyboard-space{
+    width: 410px;
+}

@@ -1,12 +1,8 @@
 // QuoteRunner script.js
 
-
-
 // /-----------\
 // | Variables |
 // \-----------/
-
-
 
 //html elements
 const quoteElement = document.getElementById("quote");
@@ -27,13 +23,40 @@ var minLength = localStorage.getItem("minLength");
 var maxLength = localStorage.getItem("maxLength");
 var lengthName = localStorage.getItem("lengthName");
 
-
+//for the keyboard
+const allowedLetters = [
+  "q",
+  "w",
+  "e",
+  "r",
+  "t",
+  "y",
+  "u",
+  "i",
+  "o",
+  "p",
+  "a",
+  "s",
+  "d",
+  "f",
+  "g",
+  "h",
+  "j",
+  "k",
+  "l",
+  "z",
+  "x",
+  "c",
+  "v",
+  "b",
+  "n",
+  "m",
+  "space",
+];
 
 // /-----------\
 // | Functions |
 // \-----------/
-
-
 
 //custom error popup
 function displayError(icon, text) {
@@ -117,6 +140,10 @@ function getQuote(minLength, maxLength, lengthName) {
         currentQuoteIndex++;
       }
       authorElement.innerHTML = author;
+    })
+    .catch((err) => {
+      quoteElement.innerHTML = "<h1>" + err + "</h1>";
+      authorElement.innerHTML = "QuoteRunner Error";
     });
 }
 
@@ -140,89 +167,114 @@ function keypressEvent(event) {
     key = "&nbsp;";
   }
 
-  if (currentLetter.innerHTML == "…") {
-    if (key == ".") {
-      key = "…";
-    }
-  }
-
-  if (key == currentLetter.innerHTML) {
-    currentLetter.style.color = "green";
-    currentLetter.style.borderLeft = "";
-    currentLetterKeypress++;
-    correctLetters++;
-
-    currentLetter = document.getElementById(currentLetterKeypress);
-    if (currentLetter == null) {
-      timerRunning = false;
-      var accuracy = Math.round((correctLetters / quoteLength) * 100);
-      var rawWpm = Math.round(quoteLength / 5 / (seconds / 60));
-      var wpm = Math.round(rawWpm * (accuracy / 100));
-
-      console.log("Quote stats: ");
-      console.info("Quote length: " + quoteLength);
-      console.info("Correct letters: " + correctLetters);
-      console.info("Seconds to complete: " + seconds);
-      console.info("Raw WPM: " + rawWpm);
-      console.info("Accuracy: " + accuracy);
-      console.info("WPM: " + wpm);
-
-      document.getElementById("quote").innerHTML =
-        "<div id='results'><h1>" +
-        wpm +
-        "</h1><p>WPM</p></div><div id='results'><h1>" +
-        accuracy +
-        "%</h1><p>Accuracy</p></div><div id='results'><h1>" +
-        rawWpm +
-        "</h1><p>Raw WPM</p></div><div id='results'><h1>" + seconds + "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' onclick='getQuote();'></div>";
-
-      firstLetter = true;
-      currentLetterKeypress = 0;
-      correctLetters = 0;
-    } else {
-      currentLetter.style.borderLeft = "3px solid black";
-      if (document.getElementById(currentLetterKeypress + 10) !== null) {
-        document
-          .getElementById(currentLetterKeypress + 10)
-          .scrollIntoView(true);
+  if (currentLetter == null) {
+    return;
+  } else {
+    if (currentLetter.innerHTML == "…") {
+      if (key == ".") {
+        key = "…";
       }
     }
-  } else {
-    currentLetter.style.borderLeft = "3px solid red";
-    correctLetters--;
+
+    if (key == currentLetter.innerHTML) {
+      currentLetter.style.color = "green";
+      currentLetter.style.borderLeft = "";
+      currentLetterKeypress++;
+      correctLetters++;
+
+      currentLetter = document.getElementById(currentLetterKeypress);
+      if (currentLetter == null) {
+        timerRunning = false;
+        var accuracy = Math.round((correctLetters / quoteLength) * 100);
+        var rawWpm = Math.round(quoteLength / 5 / (seconds / 60));
+        var wpm = Math.round(rawWpm * (accuracy / 100));
+
+        console.log("Quote stats: ");
+        console.info("Quote length: " + quoteLength);
+        console.info("Correct letters: " + correctLetters);
+        console.info("Seconds to complete: " + seconds);
+        console.info("Raw WPM: " + rawWpm);
+        console.info("Accuracy: " + accuracy);
+        console.info("WPM: " + wpm);
+
+        document.getElementById("quote").innerHTML =
+          "<div id='results'><h1>" +
+          wpm +
+          "</h1><p>WPM</p></div><div id='results'><h1>" +
+          accuracy +
+          "%</h1><p>Accuracy</p></div><div id='results'><h1>" +
+          rawWpm +
+          "</h1><p>Raw WPM</p></div><div id='results'><h1>" +
+          seconds +
+          "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' onclick='getQuote();'></div>";
+
+        firstLetter = true;
+        currentLetterKeypress = 0;
+        correctLetters = 0;
+      } else {
+        currentLetter.style.borderLeft = "3px solid black";
+        if (document.getElementById(currentLetterKeypress + 10) !== null) {
+          document
+            .getElementById(currentLetterKeypress + 10)
+            .scrollIntoView(true);
+        }
+      }
+    } else {
+      currentLetter.style.borderLeft = "3px solid red";
+      correctLetters--;
+    }
   }
 }
-
-
 
 // /-----------------\
 // | Event listeners |
 // \-----------------/
 
-
-
-document.addEventListener("keydown", (event) => {
-  var caps = event.getModifierState("CapsLock");
+//caps lock and keyboard
+document.addEventListener("keydown", (e) => {
+  var caps = e.getModifierState("CapsLock");
   if (caps) {
     displayError("keyboard_capslock", "Caps lock on");
   } else {
     clearError();
   }
+
+  var key = e.key.toLowerCase();
+
+  if (key == " ") {
+    key = "space";
+  }
+
+  if (allowedLetters.includes(key)) {
+    var keyboardKey = document.getElementById("key-" + key);
+    keyboardKey.style.backgroundColor = "black";
+  }
+});
+
+//keyboard
+document.addEventListener("keyup", (e) => {
+  var key = e.key.toLowerCase();
+
+  if (key == " ") {
+    key = "space";
+  }
+
+  if (allowedLetters.includes(key)) {
+    var keyboardKey = document.getElementById("key-" + key);
+    keyboardKey.style.backgroundColor = "grey";
+  }
 });
 
 document.addEventListener("keypress", (event) => keypressEvent(event));
 
+if (
+  minLength == undefined ||
+  maxLength == undefined ||
+  lengthName == undefined
+) {
+  minLength = 0;
+  maxLength = 50;
+  lengthName = "small";
+}
 
-document.addEventListener("onload", function(){
-  if (
-    minLength == undefined ||
-    maxLength == undefined ||
-    lengthName == undefined
-  ) {
-    minLength = 0;
-    maxLength = 50;
-    lengthName = "small";
-  }
-  
-  getQuote(minLength, maxLength, lengthName);
-})
+getQuote(minLength, maxLength, lengthName);
