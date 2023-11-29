@@ -213,15 +213,19 @@ function keypressEvent(event) {
         correctLetters = 0;
       } else {
         currentLetter.style.borderLeft = "3px solid black";
-        if (document.getElementById(currentLetterKeypress + 10) !== null) {
+        if (!document.getElementById(currentLetterKeypress + 10) == null) {
           document
             .getElementById(currentLetterKeypress + 10)
             .scrollIntoView(true);
         }
+
+        return true;
       }
     } else {
       currentLetter.style.borderLeft = "3px solid red";
       correctLetters--;
+
+      return false;
     }
   }
 }
@@ -239,6 +243,8 @@ document.addEventListener("keydown", (e) => {
     clearError();
   }
 
+  var correctLetter = keypressEvent(e);
+
   var key = e.key.toLowerCase();
 
   if (key == " ") {
@@ -247,7 +253,11 @@ document.addEventListener("keydown", (e) => {
 
   if (allowedLetters.includes(key)) {
     var keyboardKey = document.getElementById("key-" + key);
-    keyboardKey.style.backgroundColor = "black";
+    if(correctLetter){
+      keyboardKey.style.backgroundColor = "green";
+    } else{
+      keyboardKey.style.backgroundColor = "red";
+    }
   }
 });
 
@@ -264,8 +274,6 @@ document.addEventListener("keyup", (e) => {
     keyboardKey.style.backgroundColor = "grey";
   }
 });
-
-document.addEventListener("keypress", (event) => keypressEvent(event));
 
 if (
   minLength == undefined ||
