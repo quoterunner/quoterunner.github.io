@@ -18,10 +18,22 @@ var currentLetterKeypress = 0;
 var correctLetters = 0;
 var firstLetter = true;
 
-//for the onload event listener
+//for the onload
 var minLength = localStorage.getItem("minLength");
 var maxLength = localStorage.getItem("maxLength");
 var lengthName = localStorage.getItem("lengthName");
+
+//for getQuote function
+var smallSize = document.getElementById("small");
+var mediumSize = document.getElementById("medium");
+var largeSize = document.getElementById("large");
+var saveYourSoulSize = document.getElementById("save-your-soul");
+
+//for themes
+var headerQuoteUnselected;
+var headerQuoteSelected;
+var quoteColor;
+var authorColor;
 
 //for the keyboard
 const allowedLetters = [
@@ -99,12 +111,12 @@ function getQuote(minLength, maxLength, lengthName) {
   localStorage.setItem("maxLength", maxLength);
   localStorage.setItem("lengthName", lengthName);
 
-  document.getElementById("small").style.color = "black";
-  document.getElementById("medium").style.color = "black";
-  document.getElementById("large").style.color = "black";
-  document.getElementById("save-your-soul").style.color = "black";
+  smallSize.style.color = headerQuoteUnselected;
+  mediumSize.style.color = headerQuoteUnselected;
+  largeSize.style.color = headerQuoteUnselected;
+  saveYourSoulSize.style.color = headerQuoteUnselected;
 
-  document.getElementById(lengthName).style.color = "blue";
+  document.getElementById(lengthName).style.color = headerQuoteSelected;
 
   // quote api from https://github.com/lukePeavey/quotable
   fetch(
@@ -119,7 +131,6 @@ function getQuote(minLength, maxLength, lengthName) {
       var quote = json["content"].split("");
       var author = "-" + json["author"];
 
-      console.log(" ");
       console.info("New quote: " + json["content"] + " " + author);
 
       quoteElement.innerHTML = "";
@@ -150,7 +161,7 @@ function getQuote(minLength, maxLength, lengthName) {
 function keypressEvent(event) {
   var key = event.key;
 
-  if (key == "Enter") {
+  if (key == "Enter" || key == "Tab") {
     getQuote();
     return;
   }
@@ -253,9 +264,9 @@ document.addEventListener("keydown", (e) => {
 
   if (allowedLetters.includes(key)) {
     var keyboardKey = document.getElementById("key-" + key);
-    if(correctLetter){
+    if (correctLetter) {
       keyboardKey.style.backgroundColor = "green";
-    } else{
+    } else {
       keyboardKey.style.backgroundColor = "red";
     }
   }
@@ -286,3 +297,72 @@ if (
 }
 
 getQuote(minLength, maxLength, lengthName);
+
+fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
+  .then((res) => res.json())
+  .then((json) => {
+    var currentTheme = 0;
+
+    while (currentTheme < Object.keys(json).length) {
+      var name = json[currentTheme]["name"];
+      themeArray.push(name);
+
+      themeDropdown.innerHTML +=
+        "<option value='" + name + "' id='" + name + "'>" + name + "</option>";
+      currentTheme++;
+    }
+  });
+
+const themeDropdown = document.getElementById("theme-dropdown");
+var themeArray = [];
+
+const header = document.getElementById("header");
+
+var firstLoad = true;
+
+function updateTheme() {
+  fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
+    .then((res) => res.json())
+    .then((json) => {
+      if (firstLoad == true) {
+        if (localStorage.getItem("theme") == undefined) {
+          localStorage.setItem("theme", "Default");
+          console.info("Theme: Defaults theme set.");
+        } else {
+          value = localStorage.getItem("theme");
+        }
+    
+        firstLoad = false;
+      } else {
+        value = themeDropdown.value;
+      }
+    
+      console.log("Theme: " + value + " activated.");
+    
+      localStorage.setItem("theme", value);
+
+      if (themeArray.indexOf(value) == -1) {
+        displayError("palette", "Error: Theme not found");
+      } else {
+        clearError();
+      }
+      var json = json[themeArray.indexOf(value)];
+
+      document.body.style.color = json["textColor"];
+      document.body.style.backgroundColor = json["backgroundColor"];
+      header.style.backgroundColor = json["headerBackgroundColor"];
+      header.style.color = json["headerTextColor"];
+      headerQuoteUnselected = json["headerQuoteUnselected"];
+      headerQuoteSelected = json["headerQuoteSelected"];
+      quoteColor = json["quoteColor"];
+      authorColor = json["authorColor"];
+
+      document.getElementById(value).setAttribute("selected", "selected");
+
+      getQuote();
+    });
+}
+
+themeDropdown.addEventListener("change", updateTheme);
+
+updateTheme();
