@@ -35,6 +35,7 @@ var headerQuoteSelected;
 var quoteColor;
 var authorColor;
 var cursorColor;
+var nextColor;
 
 //for the keyboard
 const allowedLetters = [
@@ -216,7 +217,7 @@ function keypressEvent(event) {
           rawWpm +
           "</h1><p>Raw WPM</p></div><div id='results'><h1>" +
           seconds +
-          "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' onclick='getQuote();'></div>";
+          "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' fill='" + nextColor + "' onclick='getQuote();'></div>";
 
         firstLetter = true;
         currentLetterKeypress = 0;
@@ -350,6 +351,7 @@ function updateTheme() {
       var json = json[themeArray.indexOf(value)];
 
       document.body.style.color = json["textColor"];
+      nextColor = json["textColor"];
       cursorColor = json["cursorColor"];
       document.body.style.backgroundColor = json["backgroundColor"];
       header.style.backgroundColor = json["headerBackgroundColor"];
