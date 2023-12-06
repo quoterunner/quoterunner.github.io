@@ -365,7 +365,7 @@ function updateTheme() {
     });
 }
 
-fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboard.json")
+fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboards.json")
   .then((res) => res.json())
   .then((json) => {
     var currentKeyboard = 0;
@@ -381,7 +381,7 @@ fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboard.json
   });
 
 function updateKeyboard() {
-  fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboard.json")
+  fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboards.json")
     .then((res) => res.json())
     .then((json) => {
       if (firstLoadKeyboard == true) {
@@ -411,8 +411,6 @@ function updateKeyboard() {
       document.getElementById("keyboard").innerHTML = json["html"]
 
       document.getElementById(value).setAttribute("selected", "selected");
-
-      getQuote();
     });
 }
 
