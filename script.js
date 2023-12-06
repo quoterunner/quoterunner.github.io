@@ -161,6 +161,8 @@ function keypressEvent(event) {
   if (key == "Enter" || key == "Tab") {
     getQuote();
     return;
+  } else if (key == "Shift"){
+    return;
   }
 
   if (firstLetter == true) {
