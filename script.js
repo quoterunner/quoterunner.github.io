@@ -399,9 +399,9 @@ function updateKeyboard() {
     
       console.log("Keyboard: " + value + " layout set.");
     
-      localStorage.setItem("theme", value);
+      localStorage.setItem("keyboard", value);
 
-      if (themeArray.indexOf(value) == -1) {
+      if (keyboardArray.indexOf(value) == -1) {
         displayError("keyboard", "Error: Keyboard not found");
       } else {
         clearError();
