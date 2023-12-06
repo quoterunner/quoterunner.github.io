@@ -34,6 +34,7 @@ var headerQuoteUnselected;
 var headerQuoteSelected;
 var quoteColor;
 var authorColor;
+var cursorColor;
 
 //for the keyboard
 const allowedLetters = [
@@ -152,10 +153,6 @@ function getQuote(minLength, maxLength, lengthName) {
       }
       authorElement.innerHTML = author;
     })
-    .catch((err) => {
-      quoteElement.innerHTML = "<h1>" + err + "</h1>";
-      authorElement.innerHTML = "QuoteRunner Error";
-    });
 }
 
 function keypressEvent(event) {
@@ -223,7 +220,7 @@ function keypressEvent(event) {
         currentLetterKeypress = 0;
         correctLetters = 0;
       } else {
-        currentLetter.style.borderLeft = "3px solid black";
+        currentLetter.style.borderLeft = "3px solid " + cursorColor;
         if (!document.getElementById(currentLetterKeypress + 10) == null) {
           document
             .getElementById(currentLetterKeypress + 10)
@@ -349,6 +346,7 @@ function updateTheme() {
       var json = json[themeArray.indexOf(value)];
 
       document.body.style.color = json["textColor"];
+      cursorColor = json["cursorColor"];
       document.body.style.backgroundColor = json["backgroundColor"];
       header.style.backgroundColor = json["headerBackgroundColor"];
       header.style.color = json["headerTextColor"];
