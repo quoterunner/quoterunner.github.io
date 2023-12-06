@@ -217,7 +217,7 @@ function keypressEvent(event) {
           rawWpm +
           "</h1><p>Raw WPM</p></div><div id='results'><h1>" +
           seconds +
-          "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' fill='" + nextColor + "' onclick='getQuote();'></div>";
+          "</h1><p>Seconds</p></div><div id='results'><img src='next.svg' style='fill: " + nextColor + ";' onclick='getQuote();'></div>";
 
         firstLetter = true;
         currentLetterKeypress = 0;
