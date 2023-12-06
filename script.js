@@ -295,8 +295,6 @@ if (
   lengthName = "small";
 }
 
-getQuote(minLength, maxLength, lengthName);
-
 fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
   .then((res) => res.json())
   .then((json) => {
@@ -313,17 +311,21 @@ fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
   });
 
 const themeDropdown = document.getElementById("theme-dropdown");
+const keyboardDropdown = document.getElementById("keyboard-dropdown");
+
 var themeArray = [];
+var keyboardArray = [];
 
 const header = document.getElementById("header");
 
-var firstLoad = true;
+var firstLoadTheme = true;
+var firstLoadKeyboard = true;
 
 function updateTheme() {
   fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
     .then((res) => res.json())
     .then((json) => {
-      if (firstLoad == true) {
+      if (firstLoadTheme == true) {
         if (localStorage.getItem("theme") == undefined) {
           localStorage.setItem("theme", "Default");
           console.info("Theme: Defaults theme set.");
@@ -331,7 +333,7 @@ function updateTheme() {
           value = localStorage.getItem("theme");
         }
     
-        firstLoad = false;
+        firstLoadTheme = false;
       } else {
         value = themeDropdown.value;
       }
@@ -363,6 +365,59 @@ function updateTheme() {
     });
 }
 
+fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboard.json")
+  .then((res) => res.json())
+  .then((json) => {
+    var currentKeyboard = 0;
+
+    while (currentKeyboard < Object.keys(json).length) {
+      var name = json[currentKeyboard]["name"];
+      keyboardArray.push(name);
+
+      keyboardDropdown.innerHTML +=
+        "<option value='" + name + "' id='" + name + "'>" + name + "</option>";
+      currentKeyboard++;
+    }
+  });
+
+function updateKeyboard() {
+  fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboard.json")
+    .then((res) => res.json())
+    .then((json) => {
+      if (firstLoadKeyboard == true) {
+        if (localStorage.getItem("keyboard") == undefined) {
+          localStorage.setItem("keyboard", "Default");
+          console.info("Keyboard: Default layout set.");
+        } else {
+          value = localStorage.getItem("keyboard");
+        }
+    
+        firstLoadKeyboard = false;
+      } else {
+        value = keyboardDropdown.value;
+      }
+    
+      console.log("Keyboard: " + value + " layout set.");
+    
+      localStorage.setItem("theme", value);
+
+      if (themeArray.indexOf(value) == -1) {
+        displayError("keyboard", "Error: Keyboard not found");
+      } else {
+        clearError();
+      }
+      var json = json[keyboardArray.indexOf(value)];
+
+      document.getElementById("keyboard").innerHTML = json["html"]
+
+      document.getElementById(value).setAttribute("selected", "selected");
+
+      getQuote();
+    });
+}
+
 themeDropdown.addEventListener("change", updateTheme);
+keyboardDropdown.addEventListener("change", updateKeyboard);
 
 updateTheme();
+updateKeyboard();
