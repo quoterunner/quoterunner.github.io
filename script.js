@@ -265,7 +265,7 @@ document.addEventListener("keydown", (e) => {
     var keyboardKey = document.getElementById("key-" + key);
     if (correctLetter) {
       keyboardKey.style.backgroundColor = "green";
-    } else {
+    } else if (!correctLetter) {
       keyboardKey.style.backgroundColor = "red";
     }
   }
