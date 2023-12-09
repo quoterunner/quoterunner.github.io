@@ -52,19 +52,11 @@ a:hover {
   text-align: right;
 }
 
-#local-error-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
 #local-error {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ff6961;
   padding: 10px;
-  border-top-right-radius: 10px;
 }
 
 #keyboard-row {

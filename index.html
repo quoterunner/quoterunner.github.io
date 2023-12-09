@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"
     />
   </head>
   <body>
@@ -24,6 +24,7 @@
       </div>
     </header>
     <div id="container">
+      <div id="local-error-container"></div>
       <div id="quote-container">
         <div id="quote"><h1>Loading</h1></div>
       </div>
@@ -38,10 +39,13 @@
     />
     <div id="error-js"></div>
 
-    <label for="theme-dropdown">Theme: </label><select id="theme-dropdown"></select>
-    <label for="keyboard-dropdown">Keyboard: </label><select id="keyboard-dropdown"></select>
+    <label for="theme-dropdown">Theme: </label
+    ><select id="theme-dropdown"></select>
+    <label for="keyboard-dropdown">Keyboard: </label
+    ><select id="keyboard-dropdown"></select>
 
-    <div id="local-error-trigger"></div>
     <script src="script.js"></script>
+    <script src="/js/keyboard.js"></script>
+    <script src="/js/theme.js"></script>
   </body>
 </html>

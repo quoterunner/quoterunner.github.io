@@ -7,6 +7,7 @@
 //html elements
 const quoteElement = document.getElementById("quote");
 const authorElement = document.getElementById("author");
+const header = document.getElementById("header");
 
 //for timer function
 var seconds = 0;
@@ -73,16 +74,14 @@ const allowedLetters = [
 // \-----------/
 
 //custom error popup
-function displayError(icon, text) {
-  document.getElementById("local-error-trigger").innerHTML =
-    '<div id="local-error-container"> <div id="local-error"> <span class="material-symbols-rounded" style="font-size: 50px;"> ' +
-    icon +
-    " </span> <h2> " +
+function displayError(text) {
+  document.getElementById("local-error-container").innerHTML =
+    '<div id="local-error-container"> <div id="local-error"> <span class="material-symbols-rounded" style="color: red;"> warning </span> <p> Error: ' +
     text +
-    " </h2> </div> </div>";
+    " </p> </div> </div>";
 }
 function clearError() {
-  document.getElementById("local-error-trigger").innerHTML = "";
+  document.getElementById("local-error-container").innerHTML = "";
 }
 
 //timer for wpm
@@ -163,7 +162,7 @@ function keypressEvent(event) {
   if (key == "Enter" || key == "Tab") {
     getQuote();
     return;
-  } else if (key == "Shift"){
+  } else if (key == "Shift" || key == "CapsLock"){
     return;
   }
 
@@ -250,7 +249,7 @@ function keypressEvent(event) {
 document.addEventListener("keydown", (e) => {
   var caps = e.getModifierState("CapsLock");
   if (caps) {
-    displayError("keyboard_capslock", "Caps lock on");
+    displayError("Caps lock on");
   } else {
     clearError();
   }
@@ -297,136 +296,4 @@ if (
   lengthName = "small";
 }
 
-fetch("https://quoterunner.github.io/themes/themes.json")
-  .then((res) => res.json())
-  .then((json) => {
-    var currentTheme = 0;
-
-    while (currentTheme < Object.keys(json).length) {
-      var name = json[currentTheme]["name"];
-      themeArray.push(name);
-
-      themeDropdown.innerHTML +=
-        "<option value='" + name + "' id='" + name + "'>" + name + "</option>";
-      currentTheme++;
-    }
-  });
-
-const themeDropdown = document.getElementById("theme-dropdown");
-const keyboardDropdown = document.getElementById("keyboard-dropdown");
-
-var themeArray = [];
-var keyboardArray = [];
-
-const header = document.getElementById("header");
-
-var firstLoadTheme = true;
-var firstLoadKeyboard = true;
-
-function updateTheme() {
-  fetch("https://quoterunner.github.io/themes/themes.json")
-    .then((res) => res.json())
-    .then((json) => {
-      if (firstLoadTheme == true) {
-        if (localStorage.getItem("theme") == undefined) {
-          localStorage.setItem("theme", "Default");
-          console.info("Theme: Defaults theme set.");
-          value = "Default";
-        } else {
-          value = localStorage.getItem("theme");
-        }
-    
-        firstLoadTheme = false;
-      } else {
-        value = themeDropdown.value;
-      }
-    
-      console.log("Theme: " + value + " activated.");
-    
-      localStorage.setItem("theme", value);
-
-      if (themeArray.indexOf(value) == -1) {
-        displayError("palette", "Error: Theme not found E1");
-      } else {
-        clearError();
-      }
-      var json = json[themeArray.indexOf(value)];
-
-      if(json == undefined){
-        displayError("palette", "Error: Theme not found E2");
-        return;
-      }
-
-      document.body.style.color = json["textColor"];
-      nextColor = json["textColor"];
-      cursorColor = json["cursorColor"];
-      document.body.style.backgroundColor = json["backgroundColor"];
-      header.style.backgroundColor = json["headerBackgroundColor"];
-      header.style.color = json["headerTextColor"];
-      headerQuoteUnselected = json["headerQuoteUnselected"];
-      headerQuoteSelected = json["headerQuoteSelected"];
-      quoteColor = json["quoteColor"];
-      authorColor = json["authorColor"];
-
-      document.getElementById(value).setAttribute("selected", "selected");
-
-      getQuote();
-    });
-}
-
-fetch("https://quoterunner.github.io/keyboard/keyboards.json")
-  .then((res) => res.json())
-  .then((json) => {
-    var currentKeyboard = 0;
-
-    while (currentKeyboard < Object.keys(json).length) {
-      var name = json[currentKeyboard]["name"];
-      keyboardArray.push(name);
-
-      keyboardDropdown.innerHTML +=
-        "<option value='" + name + "' id='" + name + "'>" + name + "</option>";
-      currentKeyboard++;
-    }
-  });
-
-function updateKeyboard() {
-  fetch("https://quoterunner.github.io/keyboard/keyboards.json")
-    .then((res) => res.json())
-    .then((json) => {
-      if (firstLoadKeyboard == true) {
-        if (localStorage.getItem("keyboard") == undefined) {
-          localStorage.setItem("keyboard", "QWERTY");
-          console.info("Keyboard: Default layout set.");
-          value = "QWERTY";
-        } else {
-          value = localStorage.getItem("keyboard");
-        }
-    
-        firstLoadKeyboard = false;
-      } else {
-        value = keyboardDropdown.value;
-      }
-    
-      console.log("Keyboard: " + value + " layout set.");
-    
-      localStorage.setItem("keyboard", value);
-
-      if (keyboardArray.indexOf(value) == -1) {
-        displayError("keyboard", "Error: Keyboard not found");
-      } else {
-        clearError();
-      }
-      var json = json[keyboardArray.indexOf(value)];
-
-      document.getElementById("keyboard").innerHTML = json["html"]
-
-      document.getElementById(value).setAttribute("selected", "selected");
-    });
-}
-
-themeDropdown.addEventListener("change", updateTheme);
-keyboardDropdown.addEventListener("change", updateKeyboard);
-
-updateTheme();
-updateKeyboard();
 getQuote();
