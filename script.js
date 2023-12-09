@@ -101,7 +101,7 @@ function getQuote(minLength, maxLength, lengthName) {
   if (
     minLength == undefined ||
     maxLength == undefined ||
-    lengthName == undefined || lengthName == null
+    lengthName == undefined
   ) {
     var minLength = localStorage.getItem("minLength");
     var maxLength = localStorage.getItem("maxLength");
@@ -118,9 +118,14 @@ function getQuote(minLength, maxLength, lengthName) {
   largeSize.style.color = headerQuoteUnselected;
   saveYourSoulSize.style.color = headerQuoteUnselected;
 
-
-
-  document.getElementById(lengthName).style.color = headerQuoteSelected;
+  if(document.getElementById(lengthName) == null){
+    minLength = 0;
+    maxLength = 50;
+    lengthName = "small";
+    console.info("Quote: Default size set.");
+  } else {
+    document.getElementById(lengthName).style.color = headerQuoteSelected;
+  }
 
   // quote api from https://github.com/lukePeavey/quotable
   fetch(
@@ -296,6 +301,7 @@ if (
   minLength = 0;
   maxLength = 50;
   lengthName = "small";
+  console.info("Quote: Default size set.");
 }
 
 getQuote(minLength, maxLength, lengthName);
