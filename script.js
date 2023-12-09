@@ -296,4 +296,4 @@ if (
   lengthName = "small";
 }
 
-getQuote();
+getQuote(minLength, maxLength, lengthName);
