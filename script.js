@@ -101,7 +101,7 @@ function getQuote(minLength, maxLength, lengthName) {
   if (
     minLength == undefined ||
     maxLength == undefined ||
-    lengthName == undefined || lengthname == null
+    lengthName == undefined || lengthName == null
   ) {
     var minLength = localStorage.getItem("minLength");
     var maxLength = localStorage.getItem("maxLength");
