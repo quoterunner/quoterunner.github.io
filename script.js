@@ -101,7 +101,7 @@ function getQuote(minLength, maxLength, lengthName) {
   if (
     minLength == undefined ||
     maxLength == undefined ||
-    lengthName == undefined
+    lengthName == undefined || lengthname == null
   ) {
     var minLength = localStorage.getItem("minLength");
     var maxLength = localStorage.getItem("maxLength");
@@ -117,6 +117,8 @@ function getQuote(minLength, maxLength, lengthName) {
   mediumSize.style.color = headerQuoteUnselected;
   largeSize.style.color = headerQuoteUnselected;
   saveYourSoulSize.style.color = headerQuoteUnselected;
+
+
 
   document.getElementById(lengthName).style.color = headerQuoteSelected;
 
