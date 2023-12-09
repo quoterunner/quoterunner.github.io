@@ -423,3 +423,4 @@ keyboardDropdown.addEventListener("change", updateKeyboard);
 
 updateTheme();
 updateKeyboard();
+getQuote();
