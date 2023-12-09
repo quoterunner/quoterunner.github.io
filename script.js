@@ -345,11 +345,16 @@ function updateTheme() {
       localStorage.setItem("theme", value);
 
       if (themeArray.indexOf(value) == -1) {
-        displayError("palette", "Error: Theme not found");
+        displayError("palette", "Error: Theme not found E1");
       } else {
         clearError();
       }
       var json = json[themeArray.indexOf(value)];
+
+      if(json == undefined){
+        displayError("palette", "Error: Theme not found E2");
+        return;
+      }
 
       document.body.style.color = json["textColor"];
       nextColor = json["textColor"];
