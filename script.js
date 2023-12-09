@@ -296,7 +296,7 @@ if (
   lengthName = "small";
 }
 
-fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
+fetch("https://quoterunner.github.io/themes/themes.json")
   .then((res) => res.json())
   .then((json) => {
     var currentTheme = 0;
@@ -323,7 +323,7 @@ var firstLoadTheme = true;
 var firstLoadKeyboard = true;
 
 function updateTheme() {
-  fetch("https://raw.githubusercontent.com/quoterunner/themes/main/themes.json")
+  fetch("https://quoterunner.github.io/themes/themes.json")
     .then((res) => res.json())
     .then((json) => {
       if (firstLoadTheme == true) {
@@ -368,7 +368,7 @@ function updateTheme() {
     });
 }
 
-fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboards.json")
+fetch("https://quoterunner.github.io/keyboard/keyboards.json")
   .then((res) => res.json())
   .then((json) => {
     var currentKeyboard = 0;
@@ -384,7 +384,7 @@ fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboards.jso
   });
 
 function updateKeyboard() {
-  fetch("https://raw.githubusercontent.com/quoterunner/keyboard/main/keyboards.json")
+  fetch("https://quoterunner.github.io/keyboard/keyboards.json")
     .then((res) => res.json())
     .then((json) => {
       if (firstLoadKeyboard == true) {
