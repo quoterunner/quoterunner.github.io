@@ -113,6 +113,7 @@ function getQuote(minLength, maxLength, lengthName) {
   localStorage.setItem("maxLength", maxLength);
   localStorage.setItem("lengthName", lengthName);
 
+  document.getElementById("get-quote").style.color = headerQuoteUnselected;
   smallSize.style.color = headerQuoteUnselected;
   mediumSize.style.color = headerQuoteUnselected;
   largeSize.style.color = headerQuoteUnselected;
