@@ -30,7 +30,7 @@ var mediumSize = document.getElementById("medium");
 var largeSize = document.getElementById("large");
 var saveYourSoulSize = document.getElementById("save-your-soul");
 
-var invalidScoreAlert = "Invalid score, accuracy below 0";
+var invalidScoreAlert = "Invalid score! Press Tab or Enter to continue.";
 
 //for themes
 var headerQuoteUnselected;
@@ -210,11 +210,12 @@ function keypressEvent(event) {
       if (currentLetter == null) {
         timerRunning = false;
         var accuracy = Math.round((correctLetters / quoteLength) * 100);
-        if (accuracy < 0) {
+        var rawWpm = Math.round(quoteLength / 5 / (seconds / 60));
+        var wpm = Math.round(rawWpm * (accuracy / 100));
+        if (accuracy < 0 || rawWpm < 0 || wpm < 0) {
           displayError(invalidScoreAlert);
         } else {
-          var rawWpm = Math.round(quoteLength / 5 / (seconds / 60));
-          var wpm = Math.round(rawWpm * (accuracy / 100));
+
 
           console.log("Quote stats: ");
           console.info("Quote length: " + quoteLength);
